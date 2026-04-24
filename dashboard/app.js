@@ -1,5 +1,5 @@
 // Dashboard — vanilla JS SPA, no build step
-const API = 'http://localhost:4441';
+const API = window.location.origin;
 let refreshTimer = null;
 let currentRoute = '';
 
