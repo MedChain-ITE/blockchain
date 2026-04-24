@@ -25,6 +25,31 @@ return {
 
     ctx.log("Patient created: " + id);
   },
+  
+  // ----------------------
+  // REGISTER HOSPITAL
+  // ----------------------
+    registerHospital(ctx, id, info) {
+        const key = "hospital:" + id;
+    
+        if (ctx.get(key)) throw new Error("Hospital already exists");
+    
+        ctx.set(key, {
+        id,
+        info,
+        owner: ctx.sender,
+        createdAt: ctx.timestamp,
+        history: [
+            {
+            action: "created",
+            by: ctx.sender,
+            timestamp: ctx.timestamp
+            }
+        ]
+        });
+    
+        ctx.log("Hospital created: " + id);
+    },
 
   // ----------------------
   // GRANT ACCESS
@@ -52,26 +77,25 @@ return {
   // ADD MEDICAL RECORD
   // ----------------------
   addRecord(ctx, id, recordId, data) {
-    const patient = ctx.get("patient:" + id);
-    if (!patient) throw new Error("Patient not found");
+  const key = "record:" + id + ":" + recordId;
 
-    const isOwner = patient.owner === ctx.sender;
-    const hasAccess = ctx.get("access:" + id + ":" + ctx.sender);
+  // Prevent duplicate record
+  if (ctx.get(key)) throw new Error("Record exists");
 
-    if (!isOwner && !hasAccess)
-      throw new Error("No access");
+  ctx.set(key, {
+    recordId,
+    patientId: id,
+    data,
+    createdBy: ctx.sender,
+    timestamp: ctx.timestamp
+  });
 
-    const key = "record:" + id + ":" + recordId;
+  // Optional: update patient history if exists
+  const patientKey = "patient:" + id;
+  const patient = ctx.get(patientKey);
 
-    if (ctx.get(key)) throw new Error("Record exists");
-
-    ctx.set(key, {
-      recordId,
-      patientId: id,
-      data,
-      createdBy: ctx.sender,
-      timestamp: ctx.timestamp
-    });
+  if (patient) {
+    patient.history = patient.history || [];
 
     patient.history.push({
       action: "add_record",
@@ -80,7 +104,8 @@ return {
       timestamp: ctx.timestamp
     });
 
-    ctx.set("patient:" + id, patient);
+    ctx.set(patientKey, patient);
+  }
   },
 
   // ----------------------

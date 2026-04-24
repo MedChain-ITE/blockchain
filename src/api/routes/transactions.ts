@@ -98,35 +98,66 @@ export function transactionRoutes(node: MiniLedgerNode): Hono {
     // ========================
 
     // 1. Register Patient
-  app.post("/medchain/patient", async (c) => {
-    try {
-      const body = await c.req.json();
-      const db = node.getDatabase().raw();
+    app.post("/medchain/patient", async (c) => {
+        try {
+            const body = await c.req.json();
+            const db = node.getDatabase().raw();
 
-      // 🔥 CHECK EXIST FIRST
-      const exists = db
-          .prepare("SELECT 1 FROM world_state WHERE key=?")
-          .get("patient:" + body.id);
+            // 🔥 CHECK EXIST FIRST
+            const exists = db
+                .prepare("SELECT 1 FROM world_state WHERE key=?")
+                .get("patient:" + body.id);
 
-      if (exists) {
-        return c.json({ error: "Patient already exists" }, 409);
-      }
+            if (exists) {
+                return c.json({error: "Patient already exists"}, 409);
+            }
 
-      const tx = await node.submit({
-        type: TxType.ContractInvoke,
-        payload: {
-          kind: "contract:invoke",
-          contract: "medchain",
-          method: "registerPatient",
-          args: [body.id, body.info],
-        },
-      });
+            const tx = await node.submit({
+                type: TxType.ContractInvoke,
+                payload: {
+                    kind: "contract:invoke",
+                    contract: "medchain",
+                    method: "registerPatient",
+                    args: [body.id, body.info],
+                },
+            });
 
-      return c.json({ hash: tx.hash });
-    } catch (err) {
-      return c.json({ error: err instanceof Error ? err.message : "Error" }, 400);
-    }
-  });
+            return c.json({hash: tx.hash});
+        } catch (err) {
+            return c.json({error: err instanceof Error ? err.message : "Error"}, 400);
+        }
+    });
+
+    // 1. Register Hospital
+    app.post("/medchain/hospital", async (c) => {
+        try {
+            const body = await c.req.json();
+            const db = node.getDatabase().raw();
+
+            // 🔥 CHECK EXIST FIRST
+            const exists = db
+                .prepare("SELECT 1 FROM world_state WHERE key=?")
+                .get("hospital:" + body.id);
+
+            if (exists) {
+                return c.json({error: "Hospital already exists"}, 409);
+            }
+
+            const tx = await node.submit({
+                type: TxType.ContractInvoke,
+                payload: {
+                    kind: "contract:invoke",
+                    contract: "medchain",
+                    method: "registerHospital",
+                    args: [body.id, body.info],
+                },
+            });
+
+            return c.json({hash: tx.hash});
+        } catch (err) {
+            return c.json({error: err instanceof Error ? err.message : "Error"}, 400);
+        }
+    });
 
     // 2. Grant Access
     app.post("/medchain/access", async (c) => {
@@ -150,37 +181,37 @@ export function transactionRoutes(node: MiniLedgerNode): Hono {
     });
 
     // 3. Add Record
-  app.post("/medchain/record", async (c) => {
-    try {
-      const body = await c.req.json();
-      const db = node.getDatabase().raw();
+    app.post("/medchain/record", async (c) => {
+        try {
+            const body = await c.req.json();
+            const db = node.getDatabase().raw();
 
-      const key = `record:${body.patientId}:${body.recordId}`;
+            const key = `record:${body.patientId}:${body.recordId}`;
 
-      // 🔥 CHECK EXIST
-      const exists = db
-          .prepare("SELECT 1 FROM world_state WHERE key=?")
-          .get(key);
+            // 🔥 CHECK EXIST
+            const exists = db
+                .prepare("SELECT 1 FROM world_state WHERE key=?")
+                .get(key);
 
-      if (exists) {
-        return c.json({ error: "Record already exists" }, 409);
-      }
+            if (exists) {
+                return c.json({error: "Record already exists"}, 409);
+            }
 
-      const tx = await node.submit({
-        type: TxType.ContractInvoke,
-        payload: {
-          kind: "contract:invoke",
-          contract: "medchain",
-          method: "addRecord",
-          args: [body.patientId, body.recordId, body.data],
-        },
-      });
+            const tx = await node.submit({
+                type: TxType.ContractInvoke,
+                payload: {
+                    kind: "contract:invoke",
+                    contract: "medchain",
+                    method: "addRecord",
+                    args: [body.patientId, body.recordId, body.data],
+                },
+            });
 
-      return c.json({ hash: tx.hash });
-    } catch (err) {
-      return c.json({ error: err instanceof Error ? err.message : "Error" }, 400);
-    }
-  });
+            return c.json({hash: tx.hash});
+        } catch (err) {
+            return c.json({error: err instanceof Error ? err.message : "Error"}, 400);
+        }
+    });
 
     // ========================
     // QUERY MEDCHAIN DATA
