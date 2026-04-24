@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 260" fill="none">
+  <!-- Pastel mint background -->
+  <rect width="820" height="260" fill="#e8faf5"/>
+
+  <!-- Nested squares logo — anchored to bottom-left corner -->
+  <g transform="translate(20, 20)">
+    <!-- Outermost square -->
+    <rect x="0" y="0" width="220" height="220" rx="2" fill="none" stroke="#5bb8a6" stroke-width="2"/>
+    <!-- Second square -->
+    <rect x="0" y="0" width="170" height="170" rx="2" fill="none" stroke="#6ecbb8" stroke-width="2"/>
+    <!-- Third square -->
+    <rect x="0" y="0" width="120" height="120" rx="2" fill="none" stroke="#80d4c4" stroke-width="2"/>
+    <!-- Fourth square -->
+    <rect x="0" y="0" width="75" height="75" rx="2" fill="none" stroke="#92ddd0" stroke-width="2"/>
+    <!-- Innermost — solid filled -->
+    <rect x="0" y="0" width="36" height="36" rx="2" fill="#4aaa96"/>
+  </g>
+
+  <!-- MiniLedger text -->
+  <text x="290" y="150" font-family="'IBM Plex Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-2" fill="#1a3c34">
+    MiniLedger
+  </text>
+
+  <!-- Subtitle -->
+  <text x="294" y="190" font-family="'IBM Plex Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="400" fill="#4aaa96" letter-spacing="0.3">
+    Private Blockchain Framework
+  </text>
+</svg>

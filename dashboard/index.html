@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medchain Explorer</title>
+  <link rel="stylesheet" href="/dashboard/style.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><span>Med</span>Chain</div>
+      <div class="sidebar-develop">Developed by : La Seavyong</div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">Explorer</div>
+        <a class="nav-link" href="#/" data-route="/"><span class="nav-icon">&#9632;</span> Overview</a>
+        <a class="nav-link" href="#/blocks" data-route="/blocks"><span class="nav-icon">&#9638;</span> Blocks</a>
+        <a class="nav-link" href="#/transactions" data-route="/transactions"><span class="nav-icon">&#8644;</span> Transactions</a>
+        <a class="nav-link" href="#/state" data-route="/state"><span class="nav-icon">&#9881;</span> State</a>
+        <div class="nav-section">Smart Contracts</div>
+        <a class="nav-link" href="#/contracts" data-route="/contracts"><span class="nav-icon">&#10070;</span> Contracts</a>
+        <a class="nav-link" href="#/governance" data-route="/governance"><span class="nav-icon">&#9878;</span> Governance</a>
+        <div class="nav-section">Network</div>
+        <a class="nav-link" href="#/network" data-route="/network"><span class="nav-icon">&#8943;</span> Network</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="dot green" id="status-dot"></span>
+        <span id="status-text">Connecting...</span>
+        <div style="margin-top:4px" id="node-id-short">—</div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-left">
+          <span>Height: <strong id="tb-height">0</strong></span>
+          <span>Uptime: <strong id="tb-uptime">—</strong></span>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" id="search-input" placeholder="Search block, tx, address, state key...">
+        </div>
+      </div>
+      <div class="content" id="app"></div>
+    </div>
+  </div>
+
+  <script src="/dashboard/app.js"></script>
+</body>
+</html>
